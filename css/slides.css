@@ -1,0 +1,87 @@
+/* 16:9 슬라이드. 글자 크기를 cqw(슬라이드 너비 기준)로 잡아 미리보기와 인쇄에서 같은 비율로 보인다. */
+:root {
+  --slide-title: #1f3a5f;   /* 원문에서 추출한 제목색으로 덮어쓴다 */
+  --slide-accent: #2f6fd6;  /* 원문에서 추출한 강조색으로 덮어쓴다 */
+  --slide-text: #22262c;
+  --slide-muted: #6b7380;
+}
+
+.slide {
+  container-type: inline-size;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: var(--slide-text);
+  font-family: var(--font-ko);
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / .12), 0 0 0 1px rgb(0 0 0 / .06);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+.slide-bar { height: 1.1cqw; background: var(--slide-accent); flex: none; }
+
+.slide-header { display: flex; align-items: baseline; gap: 2cqw; padding: 4.2cqw 6cqw 0; flex: none; }
+.slide-no { font-size: 2cqw; font-weight: 700; color: var(--slide-accent); letter-spacing: .05em; }
+.slide-heading {
+  margin: 0; font-size: 3.6cqw; line-height: 1.25; font-weight: 800; color: var(--slide-title);
+  padding-bottom: 1.6cqw; border-bottom: .25cqw solid color-mix(in srgb, var(--slide-accent) 35%, #fff); flex: 1;
+}
+
+.slide-body { flex: 1; min-height: 0; padding: 3.2cqw 6cqw 0; display: flex; flex-direction: column; }
+
+.slide-footer {
+  flex: none; display: flex; justify-content: space-between; gap: 2cqw;
+  padding: 1.6cqw 6cqw 2.4cqw; font-size: 1.35cqw; color: var(--slide-muted);
+}
+.slide-footer span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.bullets { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.6cqw; }
+.bullets li { position: relative; padding-left: 3cqw; font-size: 2.4cqw; line-height: 1.45; overflow-wrap: anywhere; }
+.bullets li::before {
+  content: ""; position: absolute; left: .4cqw; top: .78em; width: 1cqw; height: 1cqw; margin-top: -.5cqw;
+  border-radius: .2cqw; background: var(--slide-accent);
+}
+
+/* 1장 */
+.deck-title { margin: .4cqw 0 1.4cqw; font-size: 4.6cqw; line-height: 1.2; font-weight: 800; color: var(--slide-title); overflow-wrap: anywhere; }
+.deck-summary {
+  margin: 0 0 2.4cqw; font-size: 2.3cqw; line-height: 1.5; color: var(--slide-text);
+  padding-left: 1.8cqw; border-left: .6cqw solid var(--slide-accent);
+}
+.bullets-compact { gap: 1cqw; }
+.bullets-compact li { font-size: 2cqw; color: #3a4049; }
+
+/* 2, 3장 */
+.bullets-key { gap: 2.6cqw; margin-top: .8cqw; }
+.bullets-key li { font-size: 2.9cqw; font-weight: 600; }
+
+/* 4장 */
+.two-col { display: grid; grid-template-columns: 1.35fr 1fr; gap: 3.2cqw; flex: 1; min-height: 0; }
+.col-title { margin: 0 0 1.6cqw; font-size: 1.8cqw; font-weight: 700; color: var(--slide-accent); letter-spacing: .02em; }
+.col .bullets li { font-size: 2.2cqw; }
+.col-check {
+  background: color-mix(in srgb, var(--slide-accent) 7%, #fff); border-radius: 1cqw; padding: 2.2cqw 2.4cqw; align-self: start;
+}
+.col-check .bullets li { font-size: 1.9cqw; }
+.col-check .bullets li::before { border-radius: 50%; background: transparent; border: .25cqw solid var(--slide-accent); }
+.muted { margin: 0; color: var(--slide-muted); font-size: 1.9cqw; }
+
+/* 인쇄: 슬라이드만 16:9 한 장씩 */
+@page { size: 13.333in 7.5in; margin: 0; }
+@media print {
+  html, body { background: #fff !important; }
+  .app { max-width: none; padding: 0; margin: 0; }
+  .app-header, .upload, .actions, .empty { display: none !important; }
+  .preview { margin: 0; }
+  .deck { display: block; }
+  .slide {
+    width: 13.333in; height: 7.5in; aspect-ratio: auto;
+    border-radius: 0; box-shadow: none;
+    break-after: page; page-break-after: always; break-inside: avoid;
+  }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+}

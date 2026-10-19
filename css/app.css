@@ -1,0 +1,73 @@
+:root {
+  --font-ko: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", "Nanum Gothic", sans-serif;
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --text: #1c1f24;
+  --muted: #5f6772;
+  --line: #d9dde3;
+  --primary: #24508f;
+  --danger: #b42318;
+  --danger-bg: #fdecea;
+  --warn-bg: #fff6e0;
+  --warn-text: #7a5300;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171b; --surface: #1e2126; --text: #e8eaed; --muted: #a2a9b3; --line: #353a42;
+    --primary: #7aa7ea; --danger: #ff8a80; --danger-bg: #3a1f1d; --warn-bg: #3a3020; --warn-text: #f2d18b;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-ko); line-height: 1.5; }
+
+.app { max-width: 1120px; margin: 0 auto; padding: 24px 16px 96px; }
+.app-header { display: flex; gap: 16px; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 20px; }
+.app-header h1 { font-size: 22px; margin: 0 0 4px; }
+.sub { margin: 0; color: var(--muted); font-size: 14px; }
+.engine { font-size: 12px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); white-space: nowrap; }
+.engine.is-demo { border-color: var(--warn-text); color: var(--warn-text); background: var(--warn-bg); }
+
+.upload { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.dropzone {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+  padding: 28px 16px; border: 2px dashed var(--line); border-radius: 10px; cursor: pointer; color: var(--muted);
+  transition: border-color .15s, background .15s;
+}
+.dropzone strong { color: var(--text); font-size: 16px; }
+.dropzone span { font-size: 13px; }
+.dropzone:hover, .dropzone:focus-visible, .dropzone.is-over { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 6%, transparent); outline: none; }
+.dropzone.is-busy { cursor: progress; opacity: .6; }
+
+.status-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-top: 12px; font-size: 14px; }
+.status { color: var(--muted); }
+.status::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; background: var(--line); vertical-align: middle; }
+.status[data-state="working"]::before { background: var(--primary); animation: pulse 1s infinite alternate; }
+.status[data-state="done"]::before { background: #2e9d5b; }
+.status[data-state="error"]::before { background: var(--danger); }
+@keyframes pulse { to { opacity: .3; } }
+@media (prefers-reduced-motion: reduce) { .status::before { animation: none !important; } }
+
+.theme { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+.swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--line); }
+
+.error, .notice { margin: 12px 0 0; padding: 10px 12px; border-radius: 8px; font-size: 14px; }
+.error { background: var(--danger-bg); color: var(--danger); }
+.notice { background: var(--warn-bg); color: var(--warn-text); }
+
+.preview { margin-top: 20px; }
+.empty { text-align: center; color: var(--muted); padding: 48px 16px; border: 1px dashed var(--line); border-radius: 12px; margin: 0; }
+.deck { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 720px) { .deck { grid-template-columns: 1fr; } }
+
+.actions {
+  position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 16px; align-items: center; justify-content: flex-end;
+  padding: 12px max(16px, calc((100vw - 1120px) / 2 + 16px)); background: var(--surface); border-top: 1px solid var(--line);
+}
+.hint { color: var(--muted); font-size: 12px; margin-right: auto; }
+.btn { font: inherit; font-weight: 600; font-size: 15px; padding: 10px 20px; border-radius: 8px; border: 0; background: var(--primary); color: #fff; cursor: pointer; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color: #0d1726; } }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+.btn:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 40%, transparent); outline-offset: 2px; }
+@media (max-width: 560px) { .hint { display: none; } }

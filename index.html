@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+    외부로 문서가 나가지 않도록 브라우저 차원에서 막는다. (PRD 6절)
+    connect-src에는 같은 출처와 사내 요약 엔진 주소만 둔다. js/config.js의 endpoint를 바꾸면 여기도 같이 바꾼다.
+  -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' http://localhost:11434; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>교육자료 요약 슬라이드</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/slides.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div>
+        <h1>교육자료 요약 슬라이드</h1>
+        <p class="sub">교육자료 PDF(100페이지 이내)를 올리면 4장 요약 슬라이드를 만듭니다. 문서는 사내 환경 밖으로 보내지 않습니다.</p>
+      </div>
+      <span class="engine" id="engine-label"></span>
+    </header>
+
+    <section class="upload">
+      <div id="dropzone" class="dropzone" role="button" tabindex="0" aria-describedby="status">
+        <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0-4.5 4.5M12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+        <strong>PDF 파일을 끌어 놓거나 눌러서 선택</strong>
+        <span>PDF만 · 100페이지 이내 · 텍스트가 있는 문서</span>
+        <input id="file-input" type="file" accept="application/pdf,.pdf" hidden>
+      </div>
+      <div class="status-row">
+        <span class="status" id="status" data-state="idle" role="status" aria-live="polite">대기 중</span>
+        <span class="theme" id="theme" hidden>
+          <i id="swatch-title" class="swatch"></i><i id="swatch-accent" class="swatch"></i>
+          <span id="theme-text"></span>
+        </span>
+      </div>
+      <p class="error" id="error" role="alert" hidden></p>
+      <p class="notice" id="notice" hidden></p>
+    </section>
+
+    <section class="preview" aria-label="슬라이드 미리보기">
+      <p class="empty" id="empty">PDF를 올리면 여기에 16:9 슬라이드 4장이 표시됩니다.</p>
+      <div class="deck" id="deck" hidden></div>
+    </section>
+
+    <footer class="actions">
+      <span class="hint">인쇄 대화상자에서 대상을 ‘PDF로 저장’으로, 여백은 ‘없음’으로 두고 ‘배경 그래픽’을 켭니다.</span>
+      <button id="save-btn" class="btn" type="button" disabled>PDF로 저장</button>
+    </footer>
+  </main>
+</body>
+</html>
